@@ -7,13 +7,13 @@ export async function POST(request: NextRequest) {
     const { publicKey } = await request.json()
 
     if (!publicKey) {
-      return NextResponse.json({ error: "Public key is required" }, { status: 400 })
+      return NextResponse.json({ error: "Clé publique requise" }, { status: 400 })
     }
 
     // Validate that the public key is in the correct format
     if (!publicKey.includes("-----BEGIN PUBLIC KEY-----") || !publicKey.includes("-----END PUBLIC KEY-----")) {
       return NextResponse.json(
-        { error: "Invalid public key format. Please provide a PEM formatted RSA public key." },
+        { error: "Le format de la clé publique est invalide. Veuillez fournir une clé publique RSA au format PEM." },
         { status: 400 },
       )
     }
@@ -29,10 +29,11 @@ export async function POST(request: NextRequest) {
         },
       })
 
-      const secretMessage = `🎉 Congratulations! Your RSA encryption is working perfectly. This is your secret message!
+      const secretMessage = `Voici le contenu du message:
+Pinguinum lorem ipsum dolor pinguinor sit amet, pinguinorum consectetur adipiscing elit. Vivamus pinguinatus lectus, pinguinellus vel pinguinorum et, tincidunt pinguinicus nulla. Ut pinguinibus arcu, bibendum pinguini sapien. Sed pinguinator purus, porta pinguini hendrerit non, aliquet pinguinibus elit. Cras pinguinibus orci ac felis pinguinellus fermentum.
 
-Timestamp Hash: ${hash}
-Generated at: ${timestamp}`;
+Hash: ${hash}
+Généré à: ${timestamp}`;
 
       // Encrypt the message using the provided public key
       const encryptedBuffer = publicEncrypt(
@@ -55,12 +56,12 @@ Generated at: ${timestamp}`;
     } catch (cryptoError) {
       console.error("Crypto error:", cryptoError)
       return NextResponse.json(
-        { error: "Failed to encrypt message. Please check your public key format." },
+        { error: "Une erreur s'est produite lors du chiffrement du message. Veuillez vérifier le format de votre clé publique." },
         { status: 400 },
       )
     }
   } catch (error) {
     console.error("Encryption error:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    return NextResponse.json({ error: "Une erreur est survenue lors du chiffrement. Veuillez contacter le mainteneur du site pour plus d'informations" }, { status: 500 })
   }
 }
