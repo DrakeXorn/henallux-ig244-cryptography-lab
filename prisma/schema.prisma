@@ -1,0 +1,15 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:/volumes/keys.db"
+}
+
+model PublicKey {
+  id        Int      @id @default(autoincrement())
+  publicKey String
+  hash      String   @unique
+  createdAt DateTime @default(now())
+}
