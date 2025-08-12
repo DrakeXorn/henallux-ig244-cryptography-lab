@@ -32,7 +32,7 @@ export default function RSAEncryptionPage() {
 
       if (!response.ok) {
         const errorData = await response.json()
-        throw new Error(errorData.error || "Failed to encrypt message")
+        throw new Error(errorData.error || "Erreur lors du chiffrement")
       }
 
       const blob = await response.blob()
@@ -47,7 +47,7 @@ export default function RSAEncryptionPage() {
 
       setDownloadSuccess(true)
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred")
+      setError(err instanceof Error ? err.message : "Une erreur est survenue")
     } finally {
       setIsLoading(false)
     }
@@ -58,21 +58,21 @@ export default function RSAEncryptionPage() {
       <div className="max-w-2xl mx-auto pt-12">
         <Card className="shadow-lg">
           <CardHeader className="text-center">
-            <CardTitle className="text-3xl font-bold text-gray-900">RSA Message Encryption</CardTitle>
+            <CardTitle className="text-3xl font-bold text-gray-900">Chiffrement d'un message avec RSA</CardTitle>
             <CardDescription className="text-lg text-gray-600">
-              Paste your armored RSA public key to encrypt and download a secret message
+              Collez votre clé publique RSA au format PEM pour chiffrer un message.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label htmlFor="publicKey" className="block text-sm font-medium text-gray-700 mb-2">
-                  RSA Public Key (PEM Format)
+                  Clé publique RSA (au format PEM)
                 </label>
                 <Textarea
                   id="publicKey"
                   placeholder={`-----BEGIN PUBLIC KEY-----
-MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...
+Votre clé publique RSA ici
 -----END PUBLIC KEY-----`}
                   value={publicKey}
                   onChange={(e) => setPublicKey(e.target.value)}
@@ -85,12 +85,12 @@ MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Encrypting...
+                    Chiffrement en cours...
                   </>
                 ) : (
                   <>
                     <Download className="mr-2 h-4 w-4" />
-                    Encrypt & Download Message
+                    Chiffrer et télécharger le message
                   </>
                 )}
               </Button>
@@ -106,8 +106,9 @@ MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...
               <Alert className="border-green-200 bg-green-50">
                 <Download className="h-4 w-4 text-green-600" />
                 <AlertDescription className="text-green-800">
-                  Encrypted message downloaded successfully as "encrypted-message.bin". This file can only be decrypted
-                  with the corresponding private key.
+                  Le message a été chiffré avec succès et téléchargé. Vous pouvez le trouver dans votre dossier de téléchargements.
+                  <br />
+                  Le fichier ne peut être déchiffré qu'avec la clé privée correspondante.
                 </AlertDescription>
               </Alert>
             )}
