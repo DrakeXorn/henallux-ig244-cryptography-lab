@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     }
 
     const timestamp = new Date().toISOString()
-    const hash = createHash("sha512").update(timestamp).digest("hex")
+    const hash = createHash("sha256").update(timestamp).digest("hex")
 
     try {
       await prisma.publicKey.create({
